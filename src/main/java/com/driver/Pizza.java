@@ -5,28 +5,30 @@ public class Pizza {
     private int price;
     private Boolean isVeg;
     private String bill;
-
     public static int vegPizzaBasePrice = 300;
     public static int nonVegPizzaBasePrice = 400;
     public static int cheesePrice = 80;
     public static int toppingPriceForVeg = 70;
     public static int toppingPriceForNonVeg = 120;
+    public static int takeAwayPrice = 20;
+    private int myToppingPrice = 0;
+    private int myPizzaBasePrice = 0;
     private boolean isCheeseAdded = false;
     private boolean isToppingAdded = false;
     private boolean isTakeAwayAdded = false;
-    public static int takeAwayPrice = 20;
-    private int myToppingPrice = 0;
 
     public Pizza(Boolean isVeg){
         this.isVeg = isVeg;
-        this.price = isVeg ? vegPizzaBasePrice : nonVegPizzaBasePrice;
-        this.bill = "Base Price Of The Pizza: "+this.price+"\n";
+        this.price = 0;
         this.isCheeseAdded = false;
         this.isToppingAdded = false;
         this.isTakeAwayAdded = false;
     }
 
     public int getPrice(){
+        this.myPizzaBasePrice = isVeg ? vegPizzaBasePrice : nonVegPizzaBasePrice;
+        this.price = myPizzaBasePrice;
+
         if(isCheeseAdded){
             this.price += cheesePrice;
         }
@@ -36,7 +38,7 @@ public class Pizza {
         }
 
         if(isTakeAwayAdded){
-            this.price += takeAwayPrice;
+            this.price += this.takeAwayPrice;
         }
 
         return this.price;
@@ -50,8 +52,8 @@ public class Pizza {
 
     public void addExtraToppings(){
         if(isToppingAdded == false){
-            isToppingAdded = true;
             this.myToppingPrice = isVeg ? toppingPriceForVeg : toppingPriceForNonVeg;
+            isToppingAdded = true;
         }
     }
 
@@ -62,7 +64,9 @@ public class Pizza {
     }
 
     public String getBill(){
-        String bill = this.bill;
+        this.getPrice();
+
+        String bill = "Base Price Of The Pizza: "+this.myPizzaBasePrice+"\n";
 
         if(isCheeseAdded){
             bill += "Extra Cheese Added: "+this.cheesePrice+"\n";
@@ -78,8 +82,6 @@ public class Pizza {
 
         bill += "Total Price: "+this.price+"\n";
 
-        this.bill = bill;
-
-        return this.bill;
+        return bill;
     }
 }
